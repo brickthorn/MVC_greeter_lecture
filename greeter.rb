@@ -1,4 +1,3 @@
-
 module View
 
   def self.welcome
@@ -21,16 +20,32 @@ module View
 
 end
 
+class FileInterface
+
+  def initialize(filename)
+    @filename = filename
+  end
+
+  def parse_names
+    File.readlines(@filename)
+  end
+
+  def write_name(name)
+    File.open(@filename, "a") { |f| f.write name }
+  end
+
+end
 
 View.welcome
 name = View.get_name
+file = FileInterface.new("normal_names.txt")
 
-normal_names = File.readlines("normal_names.txt")
+normal_names = file.parse_names
 
 if normal_names.include?(name.capitalize + "\n")
   View.familiar_greeting(name)
 else
   View.unfamiliar_greeting(name)
-  File.open("normal_names.txt", "a") { |f| f.write(name.capitalize + "\n") }
+  file.write_name(name.capitalize + "\n")
 end
 
