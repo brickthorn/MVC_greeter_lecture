@@ -36,16 +36,28 @@ class FileInterface
 
 end
 
-View.welcome
-name = View.get_name
-file = FileInterface.new("normal_names.txt")
+class GreeterController
 
-normal_names = file.parse_names
+  def initialize
+    View.welcome
+    @name = View.get_name
+    @file = FileInterface.new("normal_names.txt")
+    @normal_names = @file.parse_names
+  end
 
-if normal_names.include?(name.capitalize + "\n")
-  View.familiar_greeting(name)
-else
-  View.unfamiliar_greeting(name)
-  file.write_name(name.capitalize + "\n")
+  def run
+    if @normal_names.include?(@name.capitalize + "\n")
+      View.familiar_greeting(@name)
+    else
+      View.unfamiliar_greeting(@name)
+      @file.write_name(@name.capitalize + "\n")
+    end
+  end
+
 end
+
+greetinator = GreeterController.new
+greetinator.run
+
+
 
